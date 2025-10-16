@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+
+# Docker
+*.log
+
+# Terraform
+terraform/.terraform/
+terraform/.terraform/*
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/*.tfstate
+terraform/*.tfstate.backup
+!terraform/.terraform.lock.hcl
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kubernetes
+*.tmp

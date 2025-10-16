@@ -1,12 +1,28 @@
+terraform {
+  required_version = ">= 1.5.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.20"
+    }
+  }
+}
+
 provider "aws" {
-  region = "us-east-1" # Or your preferred AWS region
+  region = "ap-southeast-2" # Or your preferred AWS region
 }
 
 data "aws_availability_zones" "available" {}
 
+data "aws_region" "current" {}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.14.2"
+  version = "~> 5.0"
 
   name = "ecommerce-vpc"
   cidr = "10.0.0.0/16"
@@ -20,10 +36,18 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "18.29.0"
+  version = "~> 20.0"
 
   cluster_name    = "ecommerce-cluster"
-  cluster_version = "1.27"
+  cluster_version = "1.29"
+
+  cluster_endpoint_public_access  = true
+  cluster_endpoint_private_access = true
+  cluster_endpoint_public_access_cidrs = [
+    "0.0.0.0/0"
+  ]
+
+  enable_cluster_creator_admin_permissions = true
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -40,5 +64,5 @@ module "eks" {
 
 output "kubeconfig_command" {
   description = "Command to configure kubectl for the EKS cluster."
-  value       = "aws eks --region ${module.eks.cluster_region} update-kubeconfig --name ${module.eks.cluster_name}"
+  value       = "aws eks --region ${data.aws_region.current.name} update-kubeconfig --name ${module.eks.cluster_name}"
 }
