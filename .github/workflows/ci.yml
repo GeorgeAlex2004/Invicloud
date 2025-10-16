@@ -27,5 +27,5 @@ jobs:
           context: ./products-service
           push: true
           tags: |
-            georgealex2004/products-service:${{ github.sha }}
-            georgealex2004/products-service:latest
+            geonat17/products-service:${{ github.sha }}
+            geonat17/products-service:latest

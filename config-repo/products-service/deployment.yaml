@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: products-service
-          image: georgealex2004/products-service:latest # This image tag will be managed by ArgoCD
+          image: geonat17/products-service:latest # This image tag will be managed by ArgoCD
           ports:
             - containerPort: 5000
