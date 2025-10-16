@@ -15,5 +15,6 @@ spec:
       containers:
         - name: products-service
           image: geonat17/products-service:latest # This image tag will be managed by ArgoCD
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
